@@ -1,0 +1,27 @@
+SQL :
+select
+c.name as Customers
+From Customers as C
+LEFT JOIN Orders as O
+On C.id = O.customerId
+Where o.customerId is null;
+
+Pandas :
+import pandas as pd
+
+def find_customers(customers: pd.DataFrame, orders: pd.DataFrame) -> pd.DataFrame:
+    df_merged = customers.merge(
+        orders,
+        left_on="id",
+        right_on="customerId",
+        how="left"
+    )
+
+    result = (
+        df_merged[df_merged["customerId"].isna()]
+        [["name"]]
+        .rename(columns={"name": "Customers"})
+        .reset_index(drop=True)
+    )
+
+    return result

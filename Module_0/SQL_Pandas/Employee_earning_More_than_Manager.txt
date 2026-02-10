@@ -1,0 +1,29 @@
+SQL:
+
+select
+E.name as Employee
+from Employee as E
+inner join Employee as M on
+E.managerId = M.id
+where E.salary > M.salary;
+
+Pandas :
+import pandas as pd
+
+def find_employees(employee: pd.DataFrame) -> pd.DataFrame:
+    merged = employee.merge(
+        employee,
+        left_on="managerId",
+        right_on="id",
+        suffixes=("_emp", "_mgr")
+    )
+
+    # filter employees earning more than their managers
+    result = (
+        merged[merged["salary_emp"] > merged["salary_mgr"]]
+        [["name_emp"]]
+        .rename(columns={"name_emp": "Employee"})
+        .reset_index(drop=True)
+    )
+
+    return result

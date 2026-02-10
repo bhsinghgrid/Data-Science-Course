@@ -1,0 +1,17 @@
+class Solution:
+    def isValid(self, s: str) -> bool:
+
+        st = []
+        for ch in s:
+            if ch in ')]}':
+                if not st:
+                    return False
+                if (ch == ')' and st[-1] == '(') or \
+                   (ch == ']' and st[-1] == '[') or \
+                   (ch == '}' and st[-1] == '{'):
+                    st.pop()
+                else:
+                    return False
+            else:
+                st.append(ch)
+        return len(st) == 0
